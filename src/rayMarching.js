@@ -39,14 +39,14 @@ export default function RayMarcher(renderer, scene, camera) {
             shaderPass.material.uniforms.u_buffer.value = buffer;
             shaderPass.material.uniforms.u_count.value = buffer.length / PROXY_BUFFER_SIZE;
 
-            // shaderPass.material.uniforms.u_size.value = 
-            // new THREE.Vector2(renderer.getSize().width, renderer.getSize().height);
+            shaderPass.material.uniforms.u_size.value = 
+            new THREE.Vector2(renderer.getSize().width, renderer.getSize().height);
 
-            // var projMat = camera.projectionMatrix;
-            // var viewMat = camera.matrixWorldInverse;
+            var projMat = camera.projectionMatrix;
+            var viewMat = camera.matrixWorldInverse;
 
-            // var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
-            // shaderPass.material.uniforms.u_inverseViewProjectionMatrix = viewProjMat.getInverse(viewProjMat);
+            var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
+            shaderPass.material.uniforms.u_inverseViewProjectionMatrix = viewProjMat.getInverse(viewProjMat);
 
             composer.render();
         }
