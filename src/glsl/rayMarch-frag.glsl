@@ -1,7 +1,7 @@
 
 #define MAX_GEOMETRY_COUNT 100
 #define FLT_EPSILON 0.0000001
-#define MIN_STEP 0.0001
+#define MIN_STEP 0.00000000000001
 
 /* This is how I'm packing the data
 struct geometry_t {
@@ -103,11 +103,7 @@ float sdf(vec3 pos) {
     return minDist;
 }
 
-// Color Pallete from IQ
-vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d )
-{
-    return a + b*cos( 6.28318*(c*t+d) );
-}
+
 
 // From slides: https://cis700-procedural-graphics.github.io/files/implicit_surfaces_2_21_17.pdf
 vec3 estimateNormal(vec3 p) {
@@ -134,6 +130,10 @@ vec4 sphereTrace(vec4 pos, vec4 dir) {
 	return pos + t * dir;
 }
 
+vec4 lambert(vec3 norm, vec3 light) {
+	return vec4(vec3(clamp(dot(norm, light), 0.0, 1.0)), 1.0);
+}
+
 void main() {
 	// GENERATE RAYS
 	// Calculate NDC	
@@ -154,14 +154,6 @@ void main() {
 	// Get Normal
 	vec3 norm = estimateNormal(mPos.xyz);
 
-	gl_FragColor = vec4(norm.xyz, 1.0);
+	gl_FragColor = vec4(lambert(norm, vec3(0.57735, 0.57735, 0.57735)));
+	//gl_FragColor = vec4(norm.xyz, 1.0);
 }
-
-// SCRAP
-	// Calculate Color
-	// vec3 a = vec3(0.5);
-	// vec3 b = vec3(0.5);
-	// vec3 c = vec3(1.0);
-	// vec3 d = vec3(0.00, 0.33, 0.67);
-
-	// vec3 col = palette()
