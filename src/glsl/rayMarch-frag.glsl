@@ -95,6 +95,39 @@ float sdf(vec3 pos) {
     return minDist;
 }
 
+// Color Pallete from IQ
+vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d )
+{
+    return a + b*cos( 6.28318*(c*t+d) );
+}
+
+// From slides: https://cis700-procedural-graphics.github.io/files/implicit_surfaces_2_21_17.pdf
+vec3 estimateNormal(vec3 p) {
+	return normalize(vec3(
+		sdf(vec3(p.x + FLT_EPSILON, p.y, p.z)) - sdf(vec3(p.x - FLT_EPSILON, p.y, p.z)),
+		sdf(vec3(p.x, p.y + FLT_EPSILON, p.z)) - sdf(vec3(p.x, p.y - FLT_EPSILON, p.z)),
+		sdf(vec3(p.x, p.y, p.z + FLT_EPSILON)) - sdf(vec3(p.x, p.y, p.z - FLT_EPSILON))
+		));
+}
+
+vec4 sphereTrace(vec4 pos) {
+	float t = 0.0;
+	float dt = sdf(f_rayPos.xyz); // SDF through the scene
+
+	vec4 curr = pos;
+	for (int i = 0; i < 100; i++) { // 100 iterations
+		if (t > u_far && dt < FLT_EPSILON) {
+			break;
+		}
+
+		dt = sdf(curr.xyz);
+		t = t + max(dt, MIN_STEP);
+
+		curr = f_rayPos + t * f_rayDir;
+	}
+
+	return curr;
+}
 
 void main() {
 	// GENERATE RAYS
@@ -110,21 +143,22 @@ void main() {
 
 	// SPHERE TRACING
 	// Check if farther than the far clip plane
-	float t = 0.0;
-	float dt = sdf(f_rayPos.xyz); // SDF through the scene
-	for (int i = 0; i < 100; i++) { // 100 iterations
-		if (t < u_far && dt > FLT_EPSILON) {
-			break;
-		}
+	// Marched position starts at f_rayPos
+	vec4 mPos = sphereTrace(f_rayPos);
 
-		t = t + max(dt, MIN_STEP);
-		dt = sdf(f_rayPos.xyz);
-	}
+	// Get Normal
+	vec3 norm = estimateNormal(mPos.xyz);
 
-	// Marched position starts at ray position
-	vec4 mPos = f_rayPos + t * f_rayDir;
+	// Calculate Color
+	// vec3 a = vec3(0.5);
+	// vec3 b = vec3(0.5);
+	// vec3 c = vec3(1.0);
+	// vec3 d = vec3(0.00, 0.33, 0.67);
 
+	// vec3 col = palette()
 
     // Get the geometry that is closest
-    gl_FragColor = vec4(f_uv, 0, 1);
+    //gl_FragColor = vec4(f_uv, 0, 1);
+
+    gl_FragColor = vec4(norm, 1.0);
 }
