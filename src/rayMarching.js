@@ -15,9 +15,9 @@ export default function RayMarcher(renderer, scene, camera) {
                 type: 'i',
                 value: 0
             },
-            u_size: {
-                type: 'v2',
-                value: new THREE.Vector2()
+            u_cameraPosition: {
+                type: 'v3',
+                value: new THREE.Vector3()
             },
             u_inverseViewProjectionMatrix: {
                 type: 'm4',
@@ -42,22 +42,15 @@ export default function RayMarcher(renderer, scene, camera) {
             shaderPass.material.uniforms.u_buffer.value = buffer;
             shaderPass.material.uniforms.u_count.value = buffer.length / PROXY_BUFFER_SIZE;
 
-            shaderPass.material.uniforms.u_size.value = 
-            new THREE.Vector2(renderer.getSize().width, renderer.getSize().height);
+            shaderPass.material.uniforms.u_cameraPosition.value = camera.position;
+
 
             var projMat = camera.projectionMatrix;
             var viewMat = camera.matrixWorldInverse;
 
-            // var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
-            // shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewProjMat.getInverse(viewProjMat);
-            var inverseProjMat = projMat.getInverse(projMat);
-            shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewMat.clone().multiply(inverseProjMat);
-
-
-            // console.log(projMat);
-            // console.log(viewMat);
-            // console.log(viewProjMat);
-
+            var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
+            shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewProjMat.getInverse(viewProjMat);
+       
             composer.render();
         }
     }

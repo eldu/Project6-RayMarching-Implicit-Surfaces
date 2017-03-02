@@ -23,7 +23,7 @@ struct geometry_t {
 
 uniform vec4 u_buffer[MAX_GEOMETRY_COUNT];
 uniform int u_count;
-uniform vec2 u_size;
+uniform vec3 u_cameraPosition;
 uniform mat4 u_inverseViewProjectionMatrix;
 uniform float u_far;
 
@@ -34,8 +34,6 @@ varying vec2 f_uv;
 vec4 f_rayPos;
 vec4 f_rayDir;
 
-vec4 test = vec4(1.0, 0.0, 0.0, 1.0);
-
 
 // All sdf formulas assume that the shape is centered around the origin
 float sdfBox(vec3 pos) {
@@ -43,6 +41,7 @@ float sdfBox(vec3 pos) {
 }
 
 // Sphere with 0.5 Radius
+// Centered around the origin
 float sdfSphere(vec3 pos) {
 	return length(pos) - 0.5;
 }
@@ -72,21 +71,20 @@ float sdf(vec3 pos) {
 	float d = 0.0;
 
     for (int i = 0; i < MAX_GEOMETRY_COUNT; i++) {
-        //vec4 geo = u_buffer[i];
-        vec4 geo = vec4(0.0, 0.0, 0.0, 1.0);
+        vec4 geo = u_buffer[i];
         vec3 local = pos - geo.xyz;
+        
   //       if (geo.w == 0.0) {
 		// 	// Box
 		// 	d = sdfBox(local);
 
 		// } else if (geo.w == 1.0) {
 		// 	// Sphere
-		d = sdfSphere(local);
+			d = sdfSphere(local);
 		// } else if (geo.w == 2.0) {
 		// 	// Cone
 		// 	d = sdfCone(local);
 		// }
-
 
 		minDist = min(d, minDist);
 
@@ -113,7 +111,7 @@ vec3 estimateNormal(vec3 p) {
 		));
 }
 
-vec4 sphereTrace(vec4 pos) {
+vec4 sphereTrace(vec4 pos, vec4 dir) {
 	float t = 0.0;
 	float dt = sdf(pos.xyz); // SDF through the scene
 
@@ -122,29 +120,29 @@ vec4 sphereTrace(vec4 pos) {
 			break;
 		}
 
-		t = t + max(dt, MIN_STEP);
-		dt = sdf(pos.xyz + t * f_rayDir.xyz);
+		t = t + max(abs(dt), MIN_STEP) * sign(dt);
+		dt = sdf(pos.xyz + t * dir.xyz);
 	}
 
-	return pos + t * f_rayDir;
+	return pos + t * dir;
 }
 
 void main() {
 	// GENERATE RAYS
 	// Calculate NDC	
-	float ndc_x = 2.0 * f_uv.x / u_size.x - 1.0;
-	float ndc_y = 1.0 - 2.0 * f_uv.y / u_size.y;
+	float ndc_x = 2.0 * f_uv.x - 1.0;
+	float ndc_y = 2.0 * f_uv.y - 1.0;
 	vec4 f_ndc = vec4(ndc_x, ndc_y, 1.0, 1.0);
 
 	// Calculate Ray
-	vec4 P = vec4(vec3(u_inverseViewProjectionMatrix * f_ndc * u_far), 1.0);
-	f_rayPos = vec4(cameraPosition, 1.0);
+	vec4 P = u_inverseViewProjectionMatrix * (f_ndc * u_far);
+	f_rayPos = vec4(u_cameraPosition, 1.0);
 	f_rayDir = normalize(P - f_rayPos);
 
 	// SPHERE TRACING
 	// Check if farther than the far clip plane
 	// Marched position starts at f_rayPos
-	vec4 mPos = sphereTrace(f_rayPos);
+	vec4 mPos = sphereTrace(f_rayPos, f_rayDir);
 
 	// Get Normal
 	vec3 norm = estimateNormal(mPos.xyz);
