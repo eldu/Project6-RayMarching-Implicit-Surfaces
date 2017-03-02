@@ -36,6 +36,9 @@ export default function RayMarcher(renderer, scene, camera) {
 
     return {
         render: function(buffer) {
+            camera.updateMatrixWorld();
+            camera.updateProjectionMatrix();
+
             shaderPass.material.uniforms.u_buffer.value = buffer;
             shaderPass.material.uniforms.u_count.value = buffer.length / PROXY_BUFFER_SIZE;
 
@@ -45,8 +48,15 @@ export default function RayMarcher(renderer, scene, camera) {
             var projMat = camera.projectionMatrix;
             var viewMat = camera.matrixWorldInverse;
 
-            var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
-            shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewProjMat.getInverse(viewProjMat);
+            // var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
+            // shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewProjMat.getInverse(viewProjMat);
+            var inverseProjMat = projMat.getInverse(projMat);
+            shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewMat.clone().multiply(inverseProjMat);
+
+
+            // console.log(projMat);
+            // console.log(viewMat);
+            // console.log(viewProjMat);
 
             composer.render();
         }

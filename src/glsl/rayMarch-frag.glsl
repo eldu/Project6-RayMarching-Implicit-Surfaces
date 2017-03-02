@@ -34,6 +34,8 @@ varying vec2 f_uv;
 vec4 f_rayPos;
 vec4 f_rayDir;
 
+vec4 test = vec4(1.0, 0.0, 0.0, 1.0);
+
 
 // All sdf formulas assume that the shape is centered around the origin
 float sdfBox(vec3 pos) {
@@ -67,23 +69,24 @@ float sdfCylinder(vec3 pos) {
 // Returns the sdf value for the closest object
 float sdf(vec3 pos) {
 	float minDist = u_far; // Far clip plane is the farthest
-	float d = u_far;
+	float d = 0.0;
 
-    for (int i = 0; i < MAX_GEOMETRY_COUNT; ++i) {
-        vec4 geo = u_buffer[i];
+    for (int i = 0; i < MAX_GEOMETRY_COUNT; i++) {
+        //vec4 geo = u_buffer[i];
+        vec4 geo = vec4(0.0, 0.0, 0.0, 1.0);
         vec3 local = pos - geo.xyz;
+  //       if (geo.w == 0.0) {
+		// 	// Box
+		// 	d = sdfBox(local);
 
-        if (geo.w == 0.0) {
-			// Box
-			d = sdfBox(local);
+		// } else if (geo.w == 1.0) {
+		// 	// Sphere
+		d = sdfSphere(local);
+		// } else if (geo.w == 2.0) {
+		// 	// Cone
+		// 	d = sdfCone(local);
+		// }
 
-		} else if (geo.w == 1.0) {
-			// Sphere
-			d = sdfSphere(local);
-		} else if (geo.w == 2.0) {
-			// Cone
-			d = sdfCone(local);
-		}
 
 		minDist = min(d, minDist);
 
@@ -112,21 +115,18 @@ vec3 estimateNormal(vec3 p) {
 
 vec4 sphereTrace(vec4 pos) {
 	float t = 0.0;
-	float dt = sdf(f_rayPos.xyz); // SDF through the scene
+	float dt = sdf(pos.xyz); // SDF through the scene
 
-	vec4 curr = pos;
 	for (int i = 0; i < 100; i++) { // 100 iterations
-		if (t > u_far && dt < FLT_EPSILON) {
+		if (t >= u_far || dt < FLT_EPSILON) {
 			break;
 		}
 
-		dt = sdf(curr.xyz);
 		t = t + max(dt, MIN_STEP);
-
-		curr = f_rayPos + t * f_rayDir;
+		dt = sdf(pos.xyz + t * f_rayDir.xyz);
 	}
 
-	return curr;
+	return pos + t * f_rayDir;
 }
 
 void main() {
@@ -137,8 +137,8 @@ void main() {
 	vec4 f_ndc = vec4(ndc_x, ndc_y, 1.0, 1.0);
 
 	// Calculate Ray
-	vec4 P = u_inverseViewProjectionMatrix * f_ndc * u_far;
-	f_rayPos = vec4(cameraPosition, 1.0); // TODO: Confirm that cameraPosition = eye...
+	vec4 P = vec4(vec3(u_inverseViewProjectionMatrix * f_ndc * u_far), 1.0);
+	f_rayPos = vec4(cameraPosition, 1.0);
 	f_rayDir = normalize(P - f_rayPos);
 
 	// SPHERE TRACING
@@ -149,6 +149,10 @@ void main() {
 	// Get Normal
 	vec3 norm = estimateNormal(mPos.xyz);
 
+	gl_FragColor = vec4(norm.xyz, 1.0);
+}
+
+// SCRAP
 	// Calculate Color
 	// vec3 a = vec3(0.5);
 	// vec3 b = vec3(0.5);
@@ -156,9 +160,3 @@ void main() {
 	// vec3 d = vec3(0.00, 0.33, 0.67);
 
 	// vec3 col = palette()
-
-    // Get the geometry that is closest
-    //gl_FragColor = vec4(f_uv, 0, 1);
-
-    gl_FragColor = vec4(norm, 1.0);
-}

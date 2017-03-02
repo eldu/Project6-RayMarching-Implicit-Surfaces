@@ -61,9 +61,9 @@ window.addEventListener('load', function() {
     boxMesh.position.set(-3, 0, 0);
     coneMesh.position.set(3, 0, 0);
 
-    proxyGeometry.add(boxMesh);
+    //proxyGeometry.add(boxMesh);
     proxyGeometry.add(sphereMesh);
-    proxyGeometry.add(coneMesh);
+    //proxyGeometry.add(coneMesh);
 
     scene.add(proxyGeometry.group);
 
