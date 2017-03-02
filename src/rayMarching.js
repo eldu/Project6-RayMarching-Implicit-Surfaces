@@ -46,7 +46,7 @@ export default function RayMarcher(renderer, scene, camera) {
             var viewMat = camera.matrixWorldInverse;
 
             var viewProjMat = projMat.clone().multiply(viewMat); // Cloned in case it saves to projMat instead
-            shaderPass.material.uniforms.u_inverseViewProjectionMatrix = viewProjMat.getInverse(viewProjMat);
+            shaderPass.material.uniforms.u_inverseViewProjectionMatrix.value = viewProjMat.getInverse(viewProjMat);
 
             composer.render();
         }
