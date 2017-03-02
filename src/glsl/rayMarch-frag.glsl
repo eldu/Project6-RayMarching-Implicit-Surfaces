@@ -48,9 +48,15 @@ float sdfSphere(vec3 pos) {
 
 // TODO: Cone, with one cap?
 float sdfCone(vec3 pos) {
-	vec2 c = vec2(1.0);
-	float q = length(pos.xy);
-	return dot(c, vec2(q, pos.z));
+	vec3 c = vec3(1.0);
+	vec2 q = vec2(length(pos.xz), pos.y);
+	vec2 v = vec2(c.z * c.y / c.x, -c.z); // 1, -1
+	vec2 w = v - q;
+	vec2 vv = vec2(dot(v, v), v.x * v.x);
+	vec2 qv = vec2(dot(v, w), v.x * w.x);
+	vec2 d = max(qv, 0.0) * qv / vv;
+
+	return sqrt(dot(w, w) - max(d.x, d.y)) * sign(max(w.y, q.y * v.x - q.x * v.y));
 }
 
 float sdfTorus(vec3 pos) {
@@ -73,18 +79,19 @@ float sdf(vec3 pos) {
     for (int i = 0; i < MAX_GEOMETRY_COUNT; i++) {
         vec4 geo = u_buffer[i];
         vec3 local = pos - geo.xyz;
-        
-  //       if (geo.w == 0.0) {
-		// 	// Box
-		// 	d = sdfBox(local);
 
-		// } else if (geo.w == 1.0) {
-		// 	// Sphere
+        if (geo.w == 0.0) {
+		// 	// Box
+			//d = sdfBox(local);
 			d = sdfSphere(local);
-		// } else if (geo.w == 2.0) {
+		} else if (geo.w == 1.0) {
+		// 	// Sphere
+			d = sdfBox(local);
+			// d = sdfSphere(local);
+		} else if (geo.w == 2.0) {
 		// 	// Cone
-		// 	d = sdfCone(local);
-		// }
+		 	d = sdfCone(local);
+		}
 
 		minDist = min(d, minDist);
 

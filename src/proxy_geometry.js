@@ -42,9 +42,9 @@ export default class ProxyGeometry {
             this._buffer[PROXY_BUFFER_SIZE*i+2] = child.position.z;
 
             if (child.geometry instanceof THREE.BoxGeometry) {
-                this._buffer[PROXY_BUFFER_SIZE*i+3] = 0;
-            } else if (child.geometry instanceof THREE.SphereGeometry) {
                 this._buffer[PROXY_BUFFER_SIZE*i+3] = 1;
+            } else if (child.geometry instanceof THREE.SphereGeometry) {
+                this._buffer[PROXY_BUFFER_SIZE*i+3] = 0;
             } else if (child.geometry instanceof THREE.ConeGeometry) {
                 this._buffer[PROXY_BUFFER_SIZE*i+3] = 2;
             }
