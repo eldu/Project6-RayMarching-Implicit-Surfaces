@@ -32,6 +32,8 @@ varying vec2 f_uv;
 vec4 f_rayPos;
 vec4 f_rayDir;
 
+vec3 light = vec3(0.57735);
+
 // SDF FUNCTIONS ************************************ //
 // All sdf formulas assume that the shape is centered around the origin
 float sdfBox(vec3 pos) {
@@ -70,7 +72,6 @@ float sdfCylinder(vec3 pos) {
 
 // SDF Operations
 // Transformation: inverse(matrix) * position
-
 float union(float distance1, float distance2) {
 	return min(distance1, distance2);
 }
@@ -127,7 +128,6 @@ float sdf(vec3 pos) {
 
 // END SDF FUNCTIONS ****************************** / 
 
-
 // From slides: https://cis700-procedural-graphics.github.io/files/implicit_surfaces_2_21_17.pdf
 vec3 estimateNormal(vec3 p) {
 	return normalize(vec3(
@@ -178,6 +178,6 @@ void main() {
 	// Get Normal
 	vec3 norm = estimateNormal(mPos.xyz);
 
-	gl_FragColor = vec4(lambert(norm, vec3(0.57735, 0.57735, 0.57735)));
+	gl_FragColor = vec4(lambert(norm, light);
 	//gl_FragColor = vec4(norm.xyz, 1.0);
 }
