@@ -14,8 +14,6 @@ struct geometry_t {
 
 // Reference: https://threejs.org/docs/api/renderers/webgl/WebGLProgram.html
 // Already loaded into the fragment shader!
-// uniform mat4 viewMatrix
-// uniform vec3 cameraPosition;
 
 // Reference: 461 Slides, TY Adam.
 // Reference: http://graphics.cs.williams.edu/courses/cs371/f14/reading/implicit.pdf
@@ -34,7 +32,7 @@ varying vec2 f_uv;
 vec4 f_rayPos;
 vec4 f_rayDir;
 
-// SDF FUNCTIONS ------------------------------ //
+// SDF FUNCTIONS ************************************ //
 // All sdf formulas assume that the shape is centered around the origin
 float sdfBox(vec3 pos) {
 	return length(max(abs(pos) - vec3(0.5), 0.0));
@@ -68,6 +66,26 @@ float sdfTorus(vec3 pos) {
 float sdfCylinder(vec3 pos) {
 	vec2 d = abs(vec2(length(pos.xz), pos.y)) - vec2(1.0);
 	return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+}
+
+// SDF Operations
+// Transformation: inverse(matrix) * position
+
+float union(float distance1, float distance2) {
+	return min(distance1, distance2);
+}
+
+float intersection(float distance1, float distance2) {
+	return max(distance1, distance2);
+}
+
+float subtract(float distance1, float distance2) {
+	return max(-distance1, distance2)
+}
+
+float smoothMin(float a, float b, float k) {
+	float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+	return mix(b, a, h) - k * h * (1.0 - h);
 }
 
 // Iterates through all of the geometries in the scene
@@ -107,6 +125,7 @@ float sdf(vec3 pos) {
     return minDist;
 }
 
+// END SDF FUNCTIONS ****************************** / 
 
 
 // From slides: https://cis700-procedural-graphics.github.io/files/implicit_surfaces_2_21_17.pdf
@@ -134,6 +153,7 @@ vec4 sphereTrace(vec4 pos, vec4 dir) {
 	return pos + t * dir;
 }
 
+// Materials
 vec4 lambert(vec3 norm, vec3 light) {
 	return vec4(vec3(clamp(dot(norm, light), 0.0, 1.0)), 1.0);
 }
