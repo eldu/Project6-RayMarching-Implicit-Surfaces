@@ -72,6 +72,10 @@ float sdfCylinder(vec3 pos) {
 
 // SDF Operations
 // Transformation: inverse(matrix) * position
+vec3 transformation(vec3 pos, mat4 m) {
+	return inverse(m) * pos;
+}
+
 float union(float distance1, float distance2) {
 	return min(distance1, distance2);
 }
