@@ -34,7 +34,7 @@ varying vec2 f_uv;
 vec4 f_rayPos;
 vec4 f_rayDir;
 
-
+// SDF FUNCTIONS ------------------------------ //
 // All sdf formulas assume that the shape is centered around the origin
 float sdfBox(vec3 pos) {
 	return length(max(abs(pos) - vec3(0.5), 0.0));
@@ -74,23 +74,27 @@ float sdfCylinder(vec3 pos) {
 // Returns the sdf value for the closest object
 float sdf(vec3 pos) {
 	float minDist = u_far; // Far clip plane is the farthest
-	float d = 0.0;
+	float d = u_far;
 
     for (int i = 0; i < MAX_GEOMETRY_COUNT; i++) {
         vec4 geo = u_buffer[i];
         vec3 local = pos - geo.xyz;
 
         if (geo.w == 0.0) {
-		// 	// Box
-			//d = sdfBox(local);
+		// Box
 			d = sdfSphere(local);
 		} else if (geo.w == 1.0) {
 		// 	// Sphere
 			d = sdfBox(local);
-			// d = sdfSphere(local);
 		} else if (geo.w == 2.0) {
 		// 	// Cone
 		 	d = sdfCone(local);
+		} else if (geo.w == 3.0) {
+			// Torus
+			d = sdfTorus(local);
+		} else if (geo.w == 4.0) {
+			// Cylinder
+			d = sdfCylinder(local);
 		}
 
 		minDist = min(d, minDist);

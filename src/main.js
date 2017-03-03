@@ -11,6 +11,9 @@ import RayMarcher from './rayMarching'
 var BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
 var SphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 var ConeGeometry = new THREE.ConeGeometry(1, 1);
+var TorusGeometry = new THREE.TorusGeometry(1, 0.2, 16, 100);
+var CylinderGeometry = new THREE.CylinderGeometry()
+
 
 window.addEventListener('load', function() {
     var stats = new Stats();
@@ -57,13 +60,19 @@ window.addEventListener('load', function() {
     var boxMesh = new THREE.Mesh(BoxGeometry, ProxyMaterial);
     var sphereMesh = new THREE.Mesh(SphereGeometry, ProxyMaterial);
     var coneMesh = new THREE.Mesh(ConeGeometry, ProxyMaterial);
+    var torusMesh = new THREE.Mesh(TorusGeometry, ProxyMaterial);
+    var cylinderMesh = new THREE.Mesh(CylinderGeometry, ProxyMaterial);
     
     boxMesh.position.set(-3, 0, 0);
     coneMesh.position.set(3, 0, 0);
+    torusMesh.position.set(6, 0, 0);
+    cylinderMesh.position.set(9, 0, 0);
 
     proxyGeometry.add(boxMesh);
     proxyGeometry.add(sphereMesh);
     proxyGeometry.add(coneMesh);
+    proxyGeometry.add(torusMesh);
+    proxyGeometry.add(cylinderMesh);
 
     scene.add(proxyGeometry.group);
 
