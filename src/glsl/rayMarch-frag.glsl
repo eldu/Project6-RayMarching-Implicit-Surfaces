@@ -82,7 +82,7 @@ float smoothMin(float a, float b, float k) {
 // }
 
 float sdfunion(float distance1, float distance2) {
-	return smoothMin(distance1, distance2, 0.5);
+	return smoothMin(distance1, distance2, 0.2);
 }
 
 float sdfintersection(float distance1, float distance2) {
@@ -118,6 +118,16 @@ float sdf(vec3 pos) {
 		} else if (geo.w == 4.0) {
 			// Cylinder
 			d = sdfCylinder(local);
+		} else if (geo.w == 5.0) {
+			// Cube with sphere cut out
+			d = sdfsubtract(sdfSphere(local - vec3(0.0, 0.1, 0.0)), sdfBox(local));
+			// d = sdfSphere(local);
+		} else if (geo.w == 6.0) {
+			// Sphere and box and spheres stacked on top of each other
+			d = sdfunion(sdfBox(local), sdfSphere(local - vec3(0.0, 0.5, 0.0)));
+		} else if (geo.w == 7.0) {
+			// Intersection of a two spheres
+			d = sdfintersection(sdfSphere(local), sdfSphere(local - vec3(0.0, 0.5, 0.0)));
 		}
 
 		minDist = min(d, minDist);
@@ -126,6 +136,9 @@ float sdf(vec3 pos) {
             break;
         }
     }
+
+    // Adding some more custom shapes
+
 
     return minDist;
 }

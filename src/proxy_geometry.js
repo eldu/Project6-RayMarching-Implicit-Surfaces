@@ -28,10 +28,10 @@ export default class ProxyGeometry {
         const {children} = this.group;
         for (let i = 0; i < children.length; ++i) {
             const child = children[i];
-            children[i].position.set(
-                children[i].position.x,
-                children[i].position.y + Math.sin(children[i].position.x) * Math.sin(t / 1000.0),
-                children[i].position.z);
+            // children[i].position.set(
+            //     children[i].position.x,
+            //     children[i].position.y + Math.sin(children[i].position.x) * Math.sin(t / 1000.0),
+            //     children[i].position.z);
         }
         this.computeBuffer();
     }
@@ -54,6 +54,14 @@ export default class ProxyGeometry {
                 this._buffer[PROXY_BUFFER_SIZE*i+3] = 3;
             } else if (child.geometry instanceof THREE.CylinderGeometry) {
                 this._buffer[PROXY_BUFFER_SIZE*i+3] = 4;
+            // Custom Geometries
+            // These geometries are just stand ins
+            } else if (child.geometry instanceof THREE.TorusKnotGeometry) {
+                this._buffer[PROXY_BUFFER_SIZE*i+3] = 5;
+            } else if (child.geometry instanceof THREE.RingGeometry) {
+                this._buffer[PROXY_BUFFER_SIZE*i+3] = 6;
+            } else if (child.geometry instanceof THREE.IcosahedronGeometry) {
+                this._buffer[PROXY_BUFFER_SIZE*i+3] = 7;
             }
         }
     }

@@ -13,6 +13,9 @@ var SphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 var ConeGeometry = new THREE.ConeGeometry(1, 1);
 var TorusGeometry = new THREE.TorusGeometry(1, 0.2, 16, 100);
 var CylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 100);
+var SphereCubeCutoutGeometry = new THREE.TorusKnotGeometry(); // Stand in geometry for a sphere cube
+var UnionGeometry = new THREE.RingGeometry(); // Stand in geometry for three spheres stacked on top of each other
+var IntersectionGeometry = new THREE.IcosahedronGeometry(); // Stand in geometry for intersection example
 
 
 window.addEventListener('load', function() {
@@ -47,10 +50,10 @@ window.addEventListener('load', function() {
     var gui = new DAT.GUI();
 
     var options = {
-        strategy: 'Proxy Geometry'
+        strategy: 'Ray Marching'
     }
 
-    gui.add(options, 'strategy', ['Proxy Geometry', 'Ray Marching']);
+    gui.add(options, 'strategy', ['Ray Marching', 'Proxy Geometry']);
 
     scene.add(new THREE.AxisHelper(20));
     scene.add(new THREE.DirectionalLight(0xffffff, 1));
@@ -62,21 +65,30 @@ window.addEventListener('load', function() {
     var coneMesh = new THREE.Mesh(ConeGeometry, ProxyMaterial);
     var torusMesh = new THREE.Mesh(TorusGeometry, ProxyMaterial);
     var cylinderMesh = new THREE.Mesh(CylinderGeometry, ProxyMaterial);
+    var spherecubecutoutMesh = new THREE.Mesh(SphereCubeCutoutGeometry, ProxyMaterial);
+    var unionMesh = new THREE.Mesh(UnionGeometry, ProxyMaterial);
+    var intersectionMesh = new THREE.Mesh(IntersectionGeometry, ProxyMaterial);
     
     boxMesh.position.set(-3, 0, 0);
     coneMesh.position.set(3, 0, 0);
     torusMesh.position.set(6, 0, 0);
     cylinderMesh.position.set(9, 0, 0);
+    spherecubecutoutMesh.position.set(0, 0, -6);
+    unionMesh.position.set(3, 0, -6);
+    intersectionMesh.position.set(6, 0, -6);
 
     proxyGeometry.add(boxMesh);
     proxyGeometry.add(sphereMesh);
     proxyGeometry.add(coneMesh);
     proxyGeometry.add(torusMesh);
     proxyGeometry.add(cylinderMesh);
+    proxyGeometry.add(spherecubecutoutMesh);
+    proxyGeometry.add(unionMesh);
+    proxyGeometry.add(intersectionMesh);
 
     scene.add(proxyGeometry.group);
 
-    camera.position.set(5, 10, 15);
+    camera.position.set(5, 5, 15);
     camera.lookAt(new THREE.Vector3(0,0,0));
     controls.target.set(0,0,0);
     
