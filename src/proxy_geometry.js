@@ -28,10 +28,10 @@ export default class ProxyGeometry {
         const {children} = this.group;
         for (let i = 0; i < children.length; ++i) {
             const child = children[i];
-            // children[i].position.set(
-            //     children[i].position.x,
-            //     children[i].position.y + Math.sin(children[i].position.x) * Math.sin(t / 1000.0),
-            //     children[i].position.z);
+            children[i].position.set(
+                children[i].position.x,
+                children[i].position.y + Math.sin(children[i].position.x) * Math.sin(t / 1000.0) / 2.0,
+                children[i].position.z);
         }
         this.computeBuffer();
     }
