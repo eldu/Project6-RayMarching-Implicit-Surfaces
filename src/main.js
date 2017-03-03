@@ -12,7 +12,7 @@ var BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
 var SphereGeometry = new THREE.SphereGeometry(1, 32, 32);
 var ConeGeometry = new THREE.ConeGeometry(1, 1);
 var TorusGeometry = new THREE.TorusGeometry(1, 0.2, 16, 100);
-var CylinderGeometry = new THREE.CylinderGeometry()
+var CylinderGeometry = new THREE.CylinderGeometry(0.5, 0.5, 1, 100);
 
 
 window.addEventListener('load', function() {
