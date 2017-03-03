@@ -18,6 +18,9 @@ These are simple primitives with well-defined SDFs. We encourage trying other SD
   - Cylinder (3pts)
 
 ##### Useful Operators (15pts)
+Implemented operaters, but not actually using them anywhere.
+
+
 To create constructive geometry, and interesting shapes (such as holes, bumps, etc.), implement the following operators to combine your primitive SDFs.
   - Intersection (2pts)
   - Subtraction (3pts)

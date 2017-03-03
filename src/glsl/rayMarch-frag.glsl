@@ -32,7 +32,7 @@ varying vec2 f_uv;
 vec4 f_rayPos;
 vec4 f_rayDir;
 
-vec3 light = vec3(0.57735);
+//vec3 light = vec3(0.57735);
 
 // SDF FUNCTIONS ************************************ //
 // All sdf formulas assume that the shape is centered around the origin
@@ -71,26 +71,26 @@ float sdfCylinder(vec3 pos) {
 }
 
 // SDF Operations
-// Transformation: inverse(matrix) * position
-vec3 transformation(vec3 pos, mat4 m) {
-	return inverse(m) * pos;
-}
-
-float union(float distance1, float distance2) {
-	return min(distance1, distance2);
-}
-
-float intersection(float distance1, float distance2) {
-	return max(distance1, distance2);
-}
-
-float subtract(float distance1, float distance2) {
-	return max(-distance1, distance2)
-}
-
 float smoothMin(float a, float b, float k) {
 	float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
 	return mix(b, a, h) - k * h * (1.0 - h);
+}
+
+// Transformation is the transformation matrix times the position
+// vec4 sdftransformation(vec3 pos, mat4 m) {
+// 	return inverse(m) * vec4(pos, 1.0);
+// }
+
+float sdfunion(float distance1, float distance2) {
+	return smoothMin(distance1, distance2, 0.5);
+}
+
+float sdfintersection(float distance1, float distance2) {
+	return max(distance1, distance2);
+}
+
+float sdfsubtract(float distance1, float distance2) {
+	return max(-distance1, distance2);
 }
 
 // Iterates through all of the geometries in the scene
@@ -182,6 +182,5 @@ void main() {
 	// Get Normal
 	vec3 norm = estimateNormal(mPos.xyz);
 
-	gl_FragColor = vec4(lambert(norm, light);
-	//gl_FragColor = vec4(norm.xyz, 1.0);
+	gl_FragColor = vec4(lambert(norm, vec3(0.57735)));
 }

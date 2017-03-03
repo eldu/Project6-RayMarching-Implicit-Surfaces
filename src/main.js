@@ -82,10 +82,12 @@ window.addEventListener('load', function() {
     
     var rayMarcher = new RayMarcher(renderer, scene, camera);
 
+
+
     (function tick() {
         controls.update();
         stats.begin();
-        proxyGeometry.update();
+        proxyGeometry.update(Date.now());
         if (options.strategy === 'Proxy Geometry') {
             renderer.render(scene, camera);
         } else if (options.strategy === 'Ray Marching') {
