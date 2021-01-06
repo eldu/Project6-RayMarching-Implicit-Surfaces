@@ -42,7 +42,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -169,16 +169,16 @@
 	    })();
 	});
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(2)
 	module.exports.color = __webpack_require__(3)
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * dat-gui JavaScript Controller Library
@@ -3841,9 +3841,9 @@
 	dat.dom.dom,
 	dat.utils.common);
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * dat-gui JavaScript Controller Library
@@ -4601,21 +4601,16 @@
 	dat.color.toString,
 	dat.utils.common);
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	// stats.js - http://github.com/mrdoob/stats.js
-	var Stats=function(){var l=Date.now(),m=l,g=0,n=Infinity,o=0,h=0,p=Infinity,q=0,r=0,s=0,f=document.createElement("div");f.id="stats";f.addEventListener("mousedown",function(b){b.preventDefault();t(++s%2)},!1);f.style.cssText="width:80px;opacity:0.9;cursor:pointer";var a=document.createElement("div");a.id="fps";a.style.cssText="padding:0 0 3px 3px;text-align:left;background-color:#002";f.appendChild(a);var i=document.createElement("div");i.id="fpsText";i.style.cssText="color:#0ff;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px";
-	i.innerHTML="FPS";a.appendChild(i);var c=document.createElement("div");c.id="fpsGraph";c.style.cssText="position:relative;width:74px;height:30px;background-color:#0ff";for(a.appendChild(c);74>c.children.length;){var j=document.createElement("span");j.style.cssText="width:1px;height:30px;float:left;background-color:#113";c.appendChild(j)}var d=document.createElement("div");d.id="ms";d.style.cssText="padding:0 0 3px 3px;text-align:left;background-color:#020;display:none";f.appendChild(d);var k=document.createElement("div");
-	k.id="msText";k.style.cssText="color:#0f0;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px";k.innerHTML="MS";d.appendChild(k);var e=document.createElement("div");e.id="msGraph";e.style.cssText="position:relative;width:74px;height:30px;background-color:#0f0";for(d.appendChild(e);74>e.children.length;)j=document.createElement("span"),j.style.cssText="width:1px;height:30px;float:left;background-color:#131",e.appendChild(j);var t=function(b){s=b;switch(s){case 0:a.style.display=
-	"block";d.style.display="none";break;case 1:a.style.display="none",d.style.display="block"}};return{REVISION:12,domElement:f,setMode:t,begin:function(){l=Date.now()},end:function(){var b=Date.now();g=b-l;n=Math.min(n,g);o=Math.max(o,g);k.textContent=g+" MS ("+n+"-"+o+")";var a=Math.min(30,30-30*(g/200));e.appendChild(e.firstChild).style.height=a+"px";r++;b>m+1E3&&(h=Math.round(1E3*r/(b-m)),p=Math.min(p,h),q=Math.max(q,h),i.textContent=h+" FPS ("+p+"-"+q+")",a=Math.min(30,30-30*(h/100)),c.appendChild(c.firstChild).style.height=
-	a+"px",m=b,r=0);return b},update:function(){l=this.end()}}};"object"===typeof module&&(module.exports=Stats);
+	!function(e,t){ true?module.exports=t():"function"==typeof define&&define.amd?define(t):e.Stats=t()}(this,function(){"use strict";var c=function(){var n=0,l=document.createElement("div");function e(e){return l.appendChild(e.dom),e}function t(e){for(var t=0;t<l.children.length;t++)l.children[t].style.display=t===e?"block":"none";n=e}l.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000",l.addEventListener("click",function(e){e.preventDefault(),t(++n%l.children.length)},!1);var i=(performance||Date).now(),a=i,o=0,f=e(new c.Panel("FPS","#0ff","#002")),r=e(new c.Panel("MS","#0f0","#020"));if(self.performance&&self.performance.memory)var d=e(new c.Panel("MB","#f08","#201"));return t(0),{REVISION:16,dom:l,addPanel:e,showPanel:t,begin:function(){i=(performance||Date).now()},end:function(){o++;var e=(performance||Date).now();if(r.update(e-i,200),a+1e3<=e&&(f.update(1e3*o/(e-a),100),a=e,o=0,d)){var t=performance.memory;d.update(t.usedJSHeapSize/1048576,t.jsHeapSizeLimit/1048576)}return e},update:function(){i=this.end()},domElement:l,setMode:t}};return c.Panel=function(n,l,i){var a=1/0,o=0,f=Math.round,r=f(window.devicePixelRatio||1),d=80*r,e=48*r,c=3*r,p=2*r,u=3*r,s=15*r,m=74*r,h=30*r,y=document.createElement("canvas");y.width=d,y.height=e,y.style.cssText="width:80px;height:48px";var v=y.getContext("2d");return v.font="bold "+9*r+"px Helvetica,Arial,sans-serif",v.textBaseline="top",v.fillStyle=i,v.fillRect(0,0,d,e),v.fillStyle=l,v.fillText(n,c,p),v.fillRect(u,s,m,h),v.fillStyle=i,v.globalAlpha=.9,v.fillRect(u,s,m,h),{dom:y,update:function(e,t){a=Math.min(a,e),o=Math.max(o,e),v.fillStyle=i,v.globalAlpha=1,v.fillRect(0,0,d,s),v.fillStyle=l,v.fillText(f(e)+" "+n+" ("+f(a)+"-"+f(o)+")",c,p),v.drawImage(y,u+r,s,m-r,h,u,s,m-r,h),v.fillRect(u+m-r,s,r,h),v.fillStyle=i,v.globalAlpha=.9,v.fillRect(u+m-r,s,r,f((1-e/t)*h))}}},c});
 
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -4665,10 +4660,7 @@
 	
 	            for (var i = 0; i < children.length; ++i) {
 	                var child = children[i];
-	                // children[i].position.set(
-	                //     children[i].position.x,
-	                //     children[i].position.y + Math.sin(children[i].position.x) * Math.sin(t / 1000.0),
-	                //     children[i].position.z);
+	                children[i].position.set(children[i].position.x, children[i].position.y + Math.sin(children[i].position.x) * Math.sin(t / 1000.0) / 2.0, children[i].position.z);
 	            }
 	            this.computeBuffer();
 	        }
@@ -4716,9 +4708,9 @@
 	
 	exports.default = ProxyGeometry;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function (global, factory) {
 		 true ? factory(exports) :
@@ -48022,9 +48014,9 @@
 	})));
 
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -48090,9 +48082,9 @@
 	    };
 	}
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -48241,9 +48233,9 @@
 	  return EffectComposer
 	};
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -48283,9 +48275,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -48346,9 +48338,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -48408,9 +48400,9 @@
 	
 	};
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -48485,9 +48477,9 @@
 	};
 
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/**
 	 * @author alteredq / http://alteredqualia.com/
@@ -48509,27 +48501,27 @@
 	  return ClearMaskPass
 	};
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
-	module.exports = "varying vec2 f_uv;\n\nvoid main() {\n    f_uv = uv;\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\n}"
+	module.exports = "varying vec2 f_uv;\r\n\r\nvoid main() {\r\n    f_uv = uv;\r\n    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);\r\n}"
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
-	module.exports = "\n#define MAX_GEOMETRY_COUNT 100\n#define FLT_EPSILON 0.0000001\n#define MIN_STEP 0.00000000000001\n\n/* This is how I'm packing the data\nstruct geometry_t {\n    vec3 position;\n    float type;\n};\n*/\n// geometry_t is a vec4\n\n\n// Reference: https://threejs.org/docs/api/renderers/webgl/WebGLProgram.html\n// Already loaded into the fragment shader!\n\n// Reference: 461 Slides, TY Adam.\n// Reference: http://graphics.cs.williams.edu/courses/cs371/f14/reading/implicit.pdf\n// Reference: http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm\n\nuniform vec4 u_buffer[MAX_GEOMETRY_COUNT];\nuniform int u_count;\nuniform vec3 u_cameraPosition;\nuniform mat4 u_inverseViewProjectionMatrix;\nuniform float u_far;\n\n\nvarying vec2 f_uv;\n\n// Ray\nvec4 f_rayPos;\nvec4 f_rayDir;\n\n//vec3 light = vec3(0.57735);\n\n// SDF FUNCTIONS ************************************ //\n// All sdf formulas assume that the shape is centered around the origin\nfloat sdfBox(vec3 pos) {\n\treturn length(max(abs(pos) - vec3(0.5), 0.0));\n}\n\n// Sphere with 0.5 Radius\n// Centered around the origin\nfloat sdfSphere(vec3 pos) {\n\treturn length(pos) - 0.5;\n}\n\n// TODO: Cone, with one cap?\nfloat sdfCone(vec3 pos) {\n\tvec3 c = vec3(1.0);\n\tvec2 q = vec2(length(pos.xz), pos.y);\n\tvec2 v = vec2(c.z * c.y / c.x, -c.z); // 1, -1\n\tvec2 w = v - q;\n\tvec2 vv = vec2(dot(v, v), v.x * v.x);\n\tvec2 qv = vec2(dot(v, w), v.x * w.x);\n\tvec2 d = max(qv, 0.0) * qv / vv;\n\n\treturn sqrt(dot(w, w) - max(d.x, d.y)) * sign(max(w.y, q.y * v.x - q.x * v.y));\n}\n\nfloat sdfTorus(vec3 pos) {\n\tvec2 q = vec2(length(pos.xz) - 1.0, pos.y);\n\treturn length(q) - 0.5;\n}\n\n// Cylinder with Caps\nfloat sdfCylinder(vec3 pos) {\n\tvec2 d = abs(vec2(length(pos.xz), pos.y)) - vec2(1.0);\n\treturn min(max(d.x, d.y), 0.0) + length(max(d, 0.0));\n}\n\n// SDF Operations\nfloat smoothMin(float a, float b, float k) {\n\tfloat h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);\n\treturn mix(b, a, h) - k * h * (1.0 - h);\n}\n\n// Transformation is the transformation matrix times the position\n// vec4 sdftransformation(vec3 pos, mat4 m) {\n// \treturn inverse(m) * vec4(pos, 1.0);\n// }\n\nfloat sdfunion(float distance1, float distance2) {\n\treturn smoothMin(distance1, distance2, 0.2);\n}\n\nfloat sdfintersection(float distance1, float distance2) {\n\treturn max(distance1, distance2);\n}\n\nfloat sdfsubtract(float distance1, float distance2) {\n\treturn max(-distance1, distance2);\n}\n\n// Iterates through all of the geometries in the scene\n// Returns the sdf value for the closest object\nfloat sdf(vec3 pos) {\n\tfloat minDist = u_far; // Far clip plane is the farthest\n\tfloat d = u_far;\n\n    for (int i = 0; i < MAX_GEOMETRY_COUNT; i++) {\n        vec4 geo = u_buffer[i];\n        vec3 local = pos - geo.xyz;\n\n        if (geo.w == 0.0) {\n\t\t// Box\n\t\t\td = sdfSphere(local);\n\t\t} else if (geo.w == 1.0) {\n\t\t// \t// Sphere\n\t\t\td = sdfBox(local);\n\t\t} else if (geo.w == 2.0) {\n\t\t// \t// Cone\n\t\t \td = sdfCone(local);\n\t\t} else if (geo.w == 3.0) {\n\t\t\t// Torus\n\t\t\td = sdfTorus(local);\n\t\t} else if (geo.w == 4.0) {\n\t\t\t// Cylinder\n\t\t\td = sdfCylinder(local);\n\t\t} else if (geo.w == 5.0) {\n\t\t\t// Cube with sphere cut out\n\t\t\td = sdfsubtract(sdfSphere(local - vec3(0.0, 0.1, 0.0)), sdfBox(local));\n\t\t\t// d = sdfSphere(local);\n\t\t} else if (geo.w == 6.0) {\n\t\t\t// Sphere and box and spheres stacked on top of each other\n\t\t\td = sdfunion(sdfBox(local), sdfSphere(local - vec3(0.0, 0.5, 0.0)));\n\t\t} else if (geo.w == 7.0) {\n\t\t\t// Intersection of a two spheres\n\t\t\td = sdfintersection(sdfSphere(local), sdfSphere(local - vec3(0.0, 0.5, 0.0)));\n\t\t}\n\n\t\tminDist = min(d, minDist);\n\n        if (i >= u_count) {\n            break;\n        }\n    }\n\n    // Adding some more custom shapes\n\n\n    return minDist;\n}\n\n// END SDF FUNCTIONS ****************************** / \n\n// From slides: https://cis700-procedural-graphics.github.io/files/implicit_surfaces_2_21_17.pdf\nvec3 estimateNormal(vec3 p) {\n\treturn normalize(vec3(\n\t\tsdf(vec3(p.x + FLT_EPSILON, p.y, p.z)) - sdf(vec3(p.x - FLT_EPSILON, p.y, p.z)),\n\t\tsdf(vec3(p.x, p.y + FLT_EPSILON, p.z)) - sdf(vec3(p.x, p.y - FLT_EPSILON, p.z)),\n\t\tsdf(vec3(p.x, p.y, p.z + FLT_EPSILON)) - sdf(vec3(p.x, p.y, p.z - FLT_EPSILON))\n\t\t));\n}\n\nvec4 sphereTrace(vec4 pos, vec4 dir) {\n\tfloat t = 0.0;\n\tfloat dt = sdf(pos.xyz); // SDF through the scene\n\n\tfor (int i = 0; i < 100; i++) { // 100 iterations\n\t\tif (t >= u_far || dt < FLT_EPSILON) {\n\t\t\tbreak;\n\t\t}\n\n\t\tt = t + max(abs(dt), MIN_STEP) * sign(dt);\n\t\tdt = sdf(pos.xyz + t * dir.xyz);\n\t}\n\n\treturn pos + t * dir;\n}\n\n// Materials\nvec4 lambert(vec3 norm, vec3 light) {\n\treturn vec4(vec3(clamp(dot(norm, light), 0.0, 1.0)), 1.0);\n}\n\nvoid main() {\n\t// GENERATE RAYS\n\t// Calculate NDC\t\n\tfloat ndc_x = 2.0 * f_uv.x - 1.0;\n\tfloat ndc_y = 2.0 * f_uv.y - 1.0;\n\tvec4 f_ndc = vec4(ndc_x, ndc_y, 1.0, 1.0);\n\n\t// Calculate Ray\n\tvec4 P = u_inverseViewProjectionMatrix * (f_ndc * u_far);\n\tf_rayPos = vec4(u_cameraPosition, 1.0);\n\tf_rayDir = normalize(P - f_rayPos);\n\n\t// SPHERE TRACING\n\t// Check if farther than the far clip plane\n\t// Marched position starts at f_rayPos\n\tvec4 mPos = sphereTrace(f_rayPos, f_rayDir);\n\n\t// Get Normal\n\tvec3 norm = estimateNormal(mPos.xyz);\n\n\tgl_FragColor = vec4(lambert(norm, vec3(0.57735)));\n}"
+	module.exports = "\r\n#define MAX_GEOMETRY_COUNT 100\r\n#define FLT_EPSILON 0.0000001\r\n#define MIN_STEP 0.00000000000001\r\n\r\n/* This is how I'm packing the data\r\nstruct geometry_t {\r\n    vec3 position;\r\n    float type;\r\n};\r\n*/\r\n// geometry_t is a vec4\r\n\r\n\r\n// Reference: https://threejs.org/docs/api/renderers/webgl/WebGLProgram.html\r\n// Already loaded into the fragment shader!\r\n\r\n// Reference: 461 Slides, TY Adam.\r\n// Reference: http://graphics.cs.williams.edu/courses/cs371/f14/reading/implicit.pdf\r\n// Reference: http://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm\r\n\r\nuniform vec4 u_buffer[MAX_GEOMETRY_COUNT];\r\nuniform int u_count;\r\nuniform vec3 u_cameraPosition;\r\nuniform mat4 u_inverseViewProjectionMatrix;\r\nuniform float u_far;\r\n\r\n\r\nvarying vec2 f_uv;\r\n\r\n// Ray\r\nvec4 f_rayPos;\r\nvec4 f_rayDir;\r\n\r\n//vec3 light = vec3(0.57735);\r\n\r\n// SDF FUNCTIONS ************************************ //\r\n// All sdf formulas assume that the shape is centered around the origin\r\nfloat sdfBox(vec3 pos) {\r\n\treturn length(max(abs(pos) - vec3(0.5), 0.0));\r\n}\r\n\r\n// Sphere with 0.5 Radius\r\n// Centered around the origin\r\nfloat sdfSphere(vec3 pos) {\r\n\treturn length(pos) - 0.5;\r\n}\r\n\r\n// TODO: Cone, with one cap?\r\nfloat sdfCone(vec3 pos) {\r\n\tvec3 c = vec3(1.0);\r\n\tvec2 q = vec2(length(pos.xz), pos.y);\r\n\tvec2 v = vec2(c.z * c.y / c.x, -c.z); // 1, -1\r\n\tvec2 w = v - q;\r\n\tvec2 vv = vec2(dot(v, v), v.x * v.x);\r\n\tvec2 qv = vec2(dot(v, w), v.x * w.x);\r\n\tvec2 d = max(qv, 0.0) * qv / vv;\r\n\r\n\treturn sqrt(dot(w, w) - max(d.x, d.y)) * sign(max(w.y, q.y * v.x - q.x * v.y));\r\n}\r\n\r\nfloat sdfTorus(vec3 pos) {\r\n\tvec2 q = vec2(length(pos.xz) - 1.0, pos.y);\r\n\treturn length(q) - 0.5;\r\n}\r\n\r\n// Cylinder with Caps\r\nfloat sdfCylinder(vec3 pos) {\r\n\tvec2 d = abs(vec2(length(pos.xz), pos.y)) - vec2(1.0);\r\n\treturn min(max(d.x, d.y), 0.0) + length(max(d, 0.0));\r\n}\r\n\r\n// SDF Operations\r\nfloat smoothMin(float a, float b, float k) {\r\n\tfloat h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);\r\n\treturn mix(b, a, h) - k * h * (1.0 - h);\r\n}\r\n\r\n// Transformation is the transformation matrix times the position\r\n// vec4 sdftransformation(vec3 pos, mat4 m) {\r\n// \treturn inverse(m) * vec4(pos, 1.0);\r\n// }\r\n\r\nfloat sdfunion(float distance1, float distance2) {\r\n\treturn smoothMin(distance1, distance2, 0.2);\r\n}\r\n\r\nfloat sdfintersection(float distance1, float distance2) {\r\n\treturn max(distance1, distance2);\r\n}\r\n\r\nfloat sdfsubtract(float distance1, float distance2) {\r\n\treturn max(-distance1, distance2);\r\n}\r\n\r\n// Iterates through all of the geometries in the scene\r\n// Returns the sdf value for the closest object\r\nfloat sdf(vec3 pos) {\r\n\tfloat minDist = u_far; // Far clip plane is the farthest\r\n\tfloat d = u_far;\r\n\r\n    for (int i = 0; i < MAX_GEOMETRY_COUNT; i++) {\r\n        vec4 geo = u_buffer[i];\r\n        vec3 local = pos - geo.xyz;\r\n\r\n        if (geo.w == 0.0) {\r\n\t\t// Box\r\n\t\t\td = sdfSphere(local);\r\n\t\t} else if (geo.w == 1.0) {\r\n\t\t// \t// Sphere\r\n\t\t\td = sdfBox(local);\r\n\t\t} else if (geo.w == 2.0) {\r\n\t\t// \t// Cone\r\n\t\t \td = sdfCone(local);\r\n\t\t} else if (geo.w == 3.0) {\r\n\t\t\t// Torus\r\n\t\t\td = sdfTorus(local);\r\n\t\t} else if (geo.w == 4.0) {\r\n\t\t\t// Cylinder\r\n\t\t\td = sdfCylinder(local);\r\n\t\t} else if (geo.w == 5.0) {\r\n\t\t\t// Cube with sphere cut out\r\n\t\t\td = sdfsubtract(sdfSphere(local - vec3(0.0, 0.1, 0.0)), sdfBox(local));\r\n\t\t\t// d = sdfSphere(local);\r\n\t\t} else if (geo.w == 6.0) {\r\n\t\t\t// Sphere and box and spheres stacked on top of each other\r\n\t\t\td = sdfunion(sdfBox(local), sdfSphere(local - vec3(0.0, 0.5, 0.0)));\r\n\t\t} else if (geo.w == 7.0) {\r\n\t\t\t// Intersection of a two spheres\r\n\t\t\td = sdfintersection(sdfSphere(local), sdfSphere(local - vec3(0.0, 0.5, 0.0)));\r\n\t\t}\r\n\r\n\t\tminDist = min(d, minDist);\r\n\r\n        if (i >= u_count) {\r\n            break;\r\n        }\r\n    }\r\n\r\n    // Adding some more custom shapes\r\n\r\n\r\n    return minDist;\r\n}\r\n\r\n// END SDF FUNCTIONS ****************************** / \r\n\r\n// From slides: https://cis700-procedural-graphics.github.io/files/implicit_surfaces_2_21_17.pdf\r\nvec3 estimateNormal(vec3 p) {\r\n\treturn normalize(vec3(\r\n\t\tsdf(vec3(p.x + FLT_EPSILON, p.y, p.z)) - sdf(vec3(p.x - FLT_EPSILON, p.y, p.z)),\r\n\t\tsdf(vec3(p.x, p.y + FLT_EPSILON, p.z)) - sdf(vec3(p.x, p.y - FLT_EPSILON, p.z)),\r\n\t\tsdf(vec3(p.x, p.y, p.z + FLT_EPSILON)) - sdf(vec3(p.x, p.y, p.z - FLT_EPSILON))\r\n\t\t));\r\n}\r\n\r\nvec4 sphereTrace(vec4 pos, vec4 dir) {\r\n\tfloat t = 0.0;\r\n\tfloat dt = sdf(pos.xyz); // SDF through the scene\r\n\r\n\tfor (int i = 0; i < 100; i++) { // 100 iterations\r\n\t\tif (t >= u_far || dt < FLT_EPSILON) {\r\n\t\t\tbreak;\r\n\t\t}\r\n\r\n\t\tt = t + max(abs(dt), MIN_STEP) * sign(dt);\r\n\t\tdt = sdf(pos.xyz + t * dir.xyz);\r\n\t}\r\n\r\n\treturn pos + t * dir;\r\n}\r\n\r\n// Materials\r\nvec4 lambert(vec3 norm, vec3 light) {\r\n\treturn vec4(vec3(clamp(dot(norm, light), 0.0, 1.0)), 1.0);\r\n}\r\n\r\nvoid main() {\r\n\t// GENERATE RAYS\r\n\t// Calculate NDC\t\r\n\tfloat ndc_x = 2.0 * f_uv.x - 1.0;\r\n\tfloat ndc_y = 2.0 * f_uv.y - 1.0;\r\n\tvec4 f_ndc = vec4(ndc_x, ndc_y, 1.0, 1.0);\r\n\r\n\t// Calculate Ray\r\n\tvec4 P = u_inverseViewProjectionMatrix * (f_ndc * u_far);\r\n\tf_rayPos = vec4(u_cameraPosition, 1.0);\r\n\tf_rayDir = normalize(P - f_rayPos);\r\n\r\n\t// SPHERE TRACING\r\n\t// Check if farther than the far clip plane\r\n\t// Marched position starts at f_rayPos\r\n\tvec4 mPos = sphereTrace(f_rayPos, f_rayDir);\r\n\r\n\t// Get Normal\r\n\tvec3 norm = estimateNormal(mPos.xyz);\r\n\r\n\tgl_FragColor = vec4(lambert(norm, vec3(0.57735)));\r\n}"
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "index.html";
 
-/***/ },
+/***/ }),
 /* 17 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function( THREE ) {
 		/**
@@ -49553,6 +49545,6 @@
 	};
 
 
-/***/ }
+/***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map
